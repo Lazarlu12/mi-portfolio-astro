@@ -1,0 +1,11 @@
+---
+// Esto se ejecuta en el servidor (o durante el build). 
+// Cuando compiles tu proyecto, calculará el año y lo dejará fijo en el HTML.
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="text-center py-8 px-4 border-t border-border-color bg-bg-main text-text-secondary mt-12">
+  <p class="font-body text-sm hover:text-text-main transition-colors duration-300 cursor-default">
+    &copy; {currentYear} Luca Daniel Lazarte. Todos los derechos reservados.
+  </p>
+</footer>

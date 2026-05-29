@@ -1,0 +1,46 @@
+---
+// EL FRONTMATTER (Entre los tres guiones):
+// Aquí va tu lógica de servidor. Es el equivalente a lo que ponías antes de tu "return" en React.
+// Todo esto se ejecuta al construir la página, no en el navegador.
+import { data } from '../data/portfolioData';
+---
+
+<!-- EL TEMPLATE (Debajo de los guiones): -->
+<!-- Aquí va tu HTML. En Astro usamos "class" en lugar de "className". -->
+<!-- Nota cómo traduje tus estilos en línea y tu CSS puro a clases de Tailwind. -->
+
+<section id="hero" class="flex flex-wrap items-center justify-center gap-4 px-4 py-16 min-h-[80vh] flex-col md:flex-row text-center md:text-left">
+  
+  <div class="flex-1 min-w-[300px] flex flex-col">
+    <!-- fontSize: 3.5rem y fontWeight: 300 ahora son text-5xl md:text-6xl y font-light -->
+    <h1 class="text-5xl md:text-6xl mb-4 font-light text-text-main font-heading">
+      Hola, soy <span class="font-bold">{data.personalInfo.name}</span>
+    </h1>
+    
+    <h2 class="text-2xl text-text-secondary mb-8 font-body font-light">
+      {data.personalInfo.role}
+    </h2>
+    
+    <p class="max-w-[600px] text-lg mb-12 text-text-secondary mx-auto md:mx-0">
+      {data.personalInfo.bio}
+    </p>
+    
+    <!-- Tus botones. Recreé tu clase ".btn" de CSS usando clases de Tailwind -->
+    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+      <a href="#projects" class="px-6 py-3 border border-text-main text-text-main font-heading text-sm uppercase tracking-widest hover:bg-white/5 transition-colors">
+        Ver Proyectos
+      </a>
+      <a href="#contact" class="px-6 py-3 border border-text-main text-text-main font-heading text-sm uppercase tracking-widest hover:bg-white/5 transition-colors">
+        Ver Contacto
+      </a>
+      <a href={data.personalInfo.cvLink} download class="px-6 py-3 border border-border-color text-text-main font-heading text-sm uppercase tracking-widest hover:border-text-main hover:bg-white/5 transition-colors">
+        Descargar CV
+      </a>
+    </div>
+  </div>
+
+  <div class="flex-none w-full md:w-[300px] flex justify-center mt-8 md:mt-0">
+    <img class="max-w-[240px] md:max-w-[300px] w-full rounded-full" src={data.personalInfo.profileImage} alt="Profile" />
+  </div>
+
+</section>
