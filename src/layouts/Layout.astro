@@ -1,23 +1,44 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+// src/layouts/Layout.astro
+import { ClientRouter } from 'astro:transitions';
+import Navbar from '../components/NavBar.astro';
+import '../styles/global.css';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  title?: string;
+  description?: string;
+  // 'home' = página principal con scroll manual y stacking
+  // 'page' = páginas secundarias con View Transitions animadas
+  variant?: 'home' | 'page';
+}
+
+const {
+  title = 'Luca Lazarte — Frontend Developer',
+  description = 'Portfolio personal de Luca Lazarte, desarrollador frontend.',
+  variant = 'page',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+
+  <!--
+    data-variant permite aplicar estilos distintos desde CSS
+    según si estamos en el home o en una página secundaria.
+    En el home el scroll está habilitado; en páginas secundarias no.
+  -->
+  <body data-variant={variant}>
+    <Navbar />
+    <slot />
+  </body>
+</html>

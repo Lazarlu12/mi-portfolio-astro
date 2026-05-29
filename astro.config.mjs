@@ -1,31 +1,18 @@
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 
 export default defineConfig({
-  // Integra Tailwind y React aquí
+  output: 'static',
+
   integrations: [
     react(),
-    tailwind({
-      // Aquí adentro pegamos la configuración que te dio la IA
-      applyBaseStyles: false,
-      config: {
-        theme: {
-          extend: {
-            colors: {
-              'bg-main': '#121212',
-              'text-main': '#E0E0E0',
-              'text-secondary': '#B0B0B0',
-              'border-color': '#444444',
-              'accent-color': '#888888',
-            },
-            fontFamily: {
-              heading: ['Raleway', 'sans-serif'],
-              body: ['Merriweather', 'serif'],
-            },
-          },
-        },
-      },
-    }),
+    // Nota: @astrojs/tailwind NO va acá porque ya lo desinstalamos.
+    // En v4, Tailwind vive en vite.plugins, no en integrations.
   ],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

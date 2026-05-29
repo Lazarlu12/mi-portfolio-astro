@@ -1,0 +1,38 @@
+---
+// src/components/Navbar.astro
+const navLinks = [
+  { href: '/',            label: 'Inicio'      },
+  { href: '/proyectos',   label: 'Proyectos'   },
+  { href: '/sobre-mi',    label: 'Sobre mí'    },
+  { href: '/experiencia', label: 'Experiencia' },
+  { href: '/contacto',    label: 'Contacto'    },
+];
+---
+
+<nav
+  transition:persist
+  aria-label="Navegación principal"
+  class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[90%] sm:w-[60%] lg:w-[45%] xl:w-[40%] flex items-center justify-between gap-4 px-5 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full shadow-lg shadow-black/20"
+>
+  <ul class="flex items-center gap-1 text-xs font-medium tracking-wide">
+    {navLinks.map(({ href, label }) => (
+      <li>
+        <a
+          href={href}
+          class="px-3 py-1.5 rounded-full text-mid/80 hover:text-accent hover:bg-white/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        >
+          {label}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <a
+    href="/CVLuca_Lazarte.pdf"
+    download
+    aria-label="Descargar mi currículum en PDF"
+    class="shrink-0 px-4 py-1.5 bg-accent text-surface rounded-full text-xs font-semibold tracking-wide hover:bg-high hover:scale-105 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
+  >
+    CV ↓
+  </a>
+</nav>

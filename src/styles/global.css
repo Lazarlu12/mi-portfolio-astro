@@ -1,1 +1,36 @@
+/* src/styles/global.css */
+
+/* En v4 esto reemplaza a las tres líneas @tailwind base/components/utilities */
 @import "tailwindcss";
+
+/* @theme define tus tokens de color personalizados.
+   Esto los registra como clases de Tailwind:
+   bg-surface, text-high, text-accent, etc. */
+@theme {
+  --color-surface: #1C1C1C;
+  --color-high:    #FAFAFF;
+  --color-mid:     #ECEBE4;
+  --color-low:     #DADDD8;
+  --color-accent:  #AEC3B0;
+}
+
+/* Estilos base globales */
+@layer base {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: #1C1C1C;
+    color: #FAFAFF;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Color de selección de texto con tu acento */
+  ::selection {
+    background-color: #AEC3B0;
+    color: #1C1C1C;
+  }
+}
