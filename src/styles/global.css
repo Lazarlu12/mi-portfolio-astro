@@ -3,48 +3,66 @@
 /* En v4 esto reemplaza a las tres líneas @tailwind base/components/utilities */
 @import "tailwindcss";
 
-/* @theme define tus tokens de color personalizados.
-   Esto los registra como clases de Tailwind:
-   bg-surface, text-high, text-accent, etc. */
+/* ─── DESIGN TOKENS ────────────────────────────────────────────────
+   @theme registra variables CSS como clases Tailwind automáticamente:
+   --color-accent → bg-accent, text-accent, border-accent
+   --font-sans    → font-sans
+   --min-width-70 → min-w-70
+   ─────────────────────────────────────────────────────────────────── */
 @theme {
+  /* Colores */
   --color-surface: #1C1C1C;
   --color-high:    #FAFAFF;
   --color-mid:     #ECEBE4;
   --color-low:     #DADDD8;
   --color-accent:  #AEC3B0;
+
+  /* ✅ PASO 5: Tipografía */
+  --font-sans:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* ✅ Migración desde tailwind.config.js */
+  --min-width-70:  280px;   /* min-w-70 */
+  --max-width-130: 520px;   /* max-w-130 */
 }
 
-/* Estilos base globales */
-@layer base {
-  html {
-    scroll-behavior: auto;
-  }
+/* ─── BASE STYLES ─────────────────────────────────────────────────── */
+/* 
+  En v4 escribimos base styles directo, sin @layer base {}.
+  Tailwind maneja las capas CSS internamente. 
+*/
 
-  body {
-    background-color: #1C1C1C;
-    color: #FAFAFF;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  /* Color de selección de texto con tu acento */
-  ::selection {
-    background-color: #AEC3B0;
-    color: #1C1C1C;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   View Transitions — animación global para todos los cambios de página.
+html {
+  scroll-behavior: smooth; /* ← era auto, mejor smooth para portfolio */
+}
 
-   ::view-transition-old(root) → anima el contenido que SALE.
-   ::view-transition-new(root) → anima el contenido que ENTRA.
+body {
+  /* ✅ Usamos los tokens, nunca hex inline */
+  background-color: var(--color-surface);
+  color: var(--color-high);
+  font-family: var(--font-sans); /* ← agregado en PASO 5 */
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-   "root" = snapshot del DOM completo. Con transition:persist en Navbar,
-   ese elemento queda excluido del snapshot → no parpadea.
-   ───────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
 
+/* Selección de texto con color accent — buen detalle UX */
+::selection {
+  background-color: var(--color-accent); /* ← era hex, ahora token */
+  color: var(--color-surface);           /* ← era hex, ahora token */
+}
+
+/* ─── VIEW TRANSITIONS ────────────────────────────────────────────── */
 @keyframes vt-slide-out {
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(-12px); }
