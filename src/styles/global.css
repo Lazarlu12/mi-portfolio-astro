@@ -24,6 +24,7 @@
   /* ✅ Migración desde tailwind.config.js */
   --min-width-70:  280px;   /* min-w-70 */
   --max-width-130: 520px;   /* max-w-130 */
+  --z-index-100:   100;     /* z-100 */
 }
 
 /* ─── BASE STYLES ─────────────────────────────────────────────────── */
