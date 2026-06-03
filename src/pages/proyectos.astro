@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Projects from '../components/Projects.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!--
+  variant="page" → Layout aplica data-variant="page" al body.
+  min-h-screen → la sección ocupa al menos toda la pantalla.
+  flex flex-col → Footer queda pegado al fondo aunque Projects sea más corto.
+  La animación de transición la maneja el CSS global (::view-transition-*),
+  no necesitamos transition:animate aquí.
+-->
+<Layout
+  title="Proyectos — Luca Lazarte"
+  description="Proyectos de desarrollo frontend de Luca Lazarte."
+  variant="page"
+>
+  <main class="min-h-screen flex flex-col">
+    <section class="flex-1" aria-label="Proyectos">
+      <Projects />
+    </section>
+    <Footer />
+  </main>
+</Layout>
