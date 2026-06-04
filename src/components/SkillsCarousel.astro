@@ -1,0 +1,54 @@
+---
+// src/components/SkillsCarousel.astro
+// Carrusel horizontal infinito de skills. CSS puro, cero JavaScript.
+// Se puede reutilizar pasando cualquier array de strings.
+
+interface Props {
+  skills: string[];
+  speed?: number; // segundos para completar una vuelta (default: 30)
+}
+
+const { skills, speed = 30 } = Astro.props;
+---
+
+<!--
+  El wrapper tiene dos responsabilidades:
+  1. overflow-hidden → recorta el carrusel al ancho del contenedor padre
+  2. mask-image → desvanece los bordes izq/der para un look más premium
+     (usamos -webkit-mask-image también para compatibilidad con Safari)
+
+  aria-hidden="true" → decorativo. Las skills están disponibles de otras
+  formas para lectores de pantalla (lista de skills en el texto, por ejemplo).
+-->
+<div
+  class="overflow-hidden w-full mt-10"
+  style="
+    mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  "
+  aria-hidden="true"
+>
+  <!--
+    carousel-track → clase de global.css con la animación.
+    La duración va inline porque viene del prop `speed` (es dinámica).
+    gap-4 → espacio entre pills.
+  -->
+  <div
+    class="carousel-track gap-4"
+    style={`animation-duration: ${speed}s;`}
+  >
+    <!-- Set original -->
+    {skills.map((skill) => (
+      <span class="px-4 py-1.5 text-xs border border-white/10 text-low rounded-full whitespace-nowrap shrink-0 hover:border-accent/40 hover:text-accent transition-colors duration-200 cursor-default select-none">
+        {skill}
+      </span>
+    ))}
+
+    <!-- Copia exacta para el seamless loop (sin aria: ya está oculto el padre) -->
+    {skills.map((skill) => (
+      <span class="px-4 py-1.5 text-xs border border-white/10 text-low rounded-full whitespace-nowrap shrink-0 hover:border-accent/40 hover:text-accent transition-colors duration-200 cursor-default select-none">
+        {skill}
+      </span>
+    ))}
+  </div>
+</div>

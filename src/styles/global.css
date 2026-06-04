@@ -81,3 +81,25 @@ h1, h2, h3, h4, h5, h6 {
 ::view-transition-new(root) {
   animation: 350ms cubic-bezier(0, 0, 0.2, 1) both vt-slide-in;
 }
+
+/* ─── CARRUSEL INFINITO ───────────────────────────────────────────── */
+
+@keyframes carousel-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  animation-name: carousel-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Accesibilidad: respetamos la preferencia del usuario */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    animation-play-state: paused;
+  }
+}

@@ -1,16 +1,39 @@
 ---
+// src/components/About.astro
 import { data } from '../data/portfolioData';
+import SkillsCarousel from './SkillsCarousel.astro';
+
+interface Props {
+  // 'home'  → h-full + justify-center, para el contenedor sticky h-screen del stacking
+  // 'page'  → min-h-full + py-20, flujo natural para la página /sobre-mi
+  mode?: 'home' | 'page';
+}
+
+const { mode = 'home' } = Astro.props;
 ---
 
 <!--
-  h-full + flex para ocupar todo el contenedor sticky del stacking
-  El fondo tiene un tono muy ligeramente diferente al Hero para
-  que se note la separación visual cuando una sección tapa a la otra
--->
-<div class="h-full flex flex-col items-center justify-center px-8 md:px-16 bg-[#212121]">
+  Las clases del contenedor cambian según el contexto:
 
+  home: h-full llena el sticky container de h-screen. justify-center
+        centra el contenido verticalmente (el espacio arriba/abajo lo
+        maneja el propio contenedor sticky).
+
+  page: min-h-full permite crecer si el contenido es más alto que el
+        espacio disponible. py-20 da respiro vertical natural. Sin
+        justify-center para que el contenido fluya desde arriba.
+-->
+<div
+  class:list={[
+    'flex flex-col items-center px-8 md:px-16 bg-[#212121]',
+    mode === 'home'
+      ? 'h-full justify-center'
+      : 'min-h-full justify-center py-20 md:py-24',
+  ]}
+>
   <div class="max-w-3xl w-full text-center">
 
+    <!-- Patrón de encabezado de sección: span accent + h2 -->
     <span class="text-accent text-xs uppercase tracking-[0.3em] mb-4 block">
       Quién soy
     </span>
@@ -23,15 +46,8 @@ import { data } from '../data/portfolioData';
       {data.personalInfo.about}
     </p>
 
-    <!-- Skills como pills debajo del texto -->
-    <div class="flex flex-wrap gap-2 justify-center mt-10">
-      {data.skills.map((skill) => (
-        <span class="px-3 py-1 text-xs border border-white/10 text-low rounded-full hover:border-accent hover:text-accent transition-all duration-200">
-          {skill}
-        </span>
-      ))}
-    </div>
+    <!-- ✅ Carrusel infinito reemplaza las pills estáticas -->
+    <SkillsCarousel skills={data.skills} />
 
   </div>
-
 </div>
