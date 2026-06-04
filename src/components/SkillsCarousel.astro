@@ -44,7 +44,6 @@ const { skills, speed = 30 } = Astro.props;
       </span>
     ))}
 
-    <!-- Copia exacta para el seamless loop (sin aria: ya está oculto el padre) -->
     {skills.map((skill) => (
       <span class="px-4 py-1.5 text-xs border border-white/10 text-low rounded-full whitespace-nowrap shrink-0 hover:border-accent/40 hover:text-accent transition-colors duration-200 cursor-default select-none">
         {skill}
