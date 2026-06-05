@@ -17,6 +17,11 @@ export interface Experience {
   description: string;
 }
 
+export interface Skill {
+  name: string;
+  description: string;
+}
+
 export interface PortfolioData {
   personalInfo: {
     name: string;
@@ -29,7 +34,7 @@ export interface PortfolioData {
     linkedin: string;
     cvLink: string;
   };
-  skills: string[];
+  skills: Skill[];
   projects: Project[];
   experience: Experience[];
 }

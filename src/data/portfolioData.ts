@@ -1,5 +1,6 @@
 import type { PortfolioData } from '../types';
 import { images } from '../assets/images';
+import type { Skill } from '../types/index';
 
 export const data: PortfolioData = {
   personalInfo: {
@@ -13,10 +14,19 @@ export const data: PortfolioData = {
     linkedin: "https://www.linkedin.com/in/lucalazarte/",
     cvLink: "/CVLuca_Lazarte.pdf"
   },
-  skills: [
-    "HTML", "CSS", "JavaScript", "TypeScript", "React.js", "Tailwind CSS",
-    "Git", "Responsive Design", "C#", "PWA"
-  ],
+  // Reemplazá el array de skills:
+skills: [
+  { name: 'HTML',              description: 'Estructura y semántica web' },
+  { name: 'CSS',               description: 'Estilos, layouts y animaciones' },
+  { name: 'JavaScript',        description: 'Lenguaje de scripting web' },
+  { name: 'TypeScript',        description: 'JavaScript con tipado estático' },
+  { name: 'React.js',          description: 'Librería para interfaces UI' },
+  { name: 'Tailwind CSS',      description: 'Framework CSS utility-first' },
+  { name: 'Git',               description: 'Control de versiones distribuido' },
+  { name: 'Responsive Design', description: 'UI adaptable a cualquier pantalla' },
+  { name: 'C#',                description: 'Lenguaje de desarrollo .NET' },
+  { name: 'PWA',               description: 'Apps web progresivas e instalables' },
+] satisfies Skill[],
   projects: [
     {
       id: "1",

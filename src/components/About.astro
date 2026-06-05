@@ -4,35 +4,25 @@ import { data } from '../data/portfolioData';
 import SkillsCarousel from './SkillsCarousel.astro';
 
 interface Props {
-  // 'home'  → h-full + justify-center, para el contenedor sticky h-screen del stacking
-  // 'page'  → min-h-full + py-20, flujo natural para la página /sobre-mi
   mode?: 'home' | 'page';
 }
-
 const { mode = 'home' } = Astro.props;
 ---
 
 <!--
-  Las clases del contenedor cambian según el contexto:
-
-  home: h-full llena el sticky container de h-screen. justify-center
-        centra el contenido verticalmente (el espacio arriba/abajo lo
-        maneja el propio contenedor sticky).
-
-  page: min-h-full permite crecer si el contenido es más alto que el
-        espacio disponible. py-20 da respiro vertical natural. Sin
-        justify-center para que el contenido fluya desde arriba.
+  Sin padding lateral en el contenedor externo → el carrusel puede ir a full-width.
+  El texto sí tiene su propio padding mediante el div max-w-3xl interno.
 -->
 <div
   class:list={[
-    'flex flex-col items-center px-8 md:px-16 bg-[#212121]',
+    'flex flex-col items-center bg-[#212121]',
     mode === 'home'
       ? 'h-full justify-center'
       : 'min-h-full justify-center py-20 md:py-24',
   ]}
 >
-  <div class="max-w-3xl w-full text-center">
-
+  <!-- Texto centrado y contenido dentro de max-w-3xl con padding lateral -->
+  <div class="max-w-3xl w-full text-center px-8 md:px-16">
     <span class="text-accent text-xs uppercase tracking-[0.3em] mb-4 block">
       Quién soy
     </span>
@@ -44,9 +34,13 @@ const { mode = 'home' } = Astro.props;
     <p class="text-mid text-lg md:text-xl leading-relaxed">
       {data.personalInfo.about}
     </p>
+  </div>
 
-    <!-- ✅ Carrusel infinito reemplaza las pills estáticas -->
+  <!--
+    El carrusel vive FUERA del max-w-3xl → corre de borde a borde de la sección.
+    El mt-10 ya está dentro de SkillsCarousel.
+  -->
+  <div class="w-full">
     <SkillsCarousel skills={data.skills} />
-
   </div>
 </div>
