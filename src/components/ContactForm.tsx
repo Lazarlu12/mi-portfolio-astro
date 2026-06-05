@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-// Tipamos la forma de nuestro formulario y sus posibles errores
+// ─── TIPOS ────────────────────────────────────────────────────────────
 interface FormData {
   nombre: string;
   email: string;
@@ -13,22 +13,29 @@ interface FormErrors {
   mensaje?: string;
 }
 
-// El ciclo de vida del envío del formulario
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
-export default function ContactForm() {
-  // Estado controlado: React "dueño" de cada campo del form
-  const [form, setForm] = useState<FormData>({ nombre: '', email: '', mensaje: '' });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [status, setStatus] = useState<FormStatus>('idle');
+// ─── CONFIGURACIÓN ────────────────────────────────────────────────────
+// ✅ Reemplazá TU_FORM_ID con el ID que te dio Formspree (ej: "xpzgkwqr")
+// El ID NO es secreto: es público por diseño. No necesitás .env para esto.
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mlgkgnpg';
 
-  // Valida todos los campos y retorna true si no hay errores
+// ─── COMPONENTE ───────────────────────────────────────────────────────
+export default function ContactForm() {
+  const [form, setForm]       = useState<FormData>({ nombre: '', email: '', mensaje: '' });
+  const [errors, setErrors]   = useState<FormErrors>({});
+  const [status, setStatus]   = useState<FormStatus>('idle');
+
+  // Honeypot anti-spam: campo oculto para humanos.
+  // Los bots lo llenan automáticamente → Formspree descarta el envío.
+  const [honeypot, setHoneypot] = useState('');
+
+  // ── Validación ──────────────────────────────────────────────────────
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!form.nombre.trim()) {
+    if (!form.nombre.trim())
       newErrors.nombre = 'El nombre es requerido';
-    }
 
     if (!form.email.trim()) {
       newErrors.email = 'El email es requerido';
@@ -46,19 +53,19 @@ export default function ContactForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handler compartido para inputs y textarea
+  // ── Handler de inputs ───────────────────────────────────────────────
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-
-    // UX: limpia el error del campo apenas el usuario empieza a corregirlo
+    // UX: limpia el error apenas el usuario empieza a corregir
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
+  // ── Submit ──────────────────────────────────────────────────────────
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
@@ -66,38 +73,56 @@ export default function ContactForm() {
     setStatus('loading');
 
     try {
-      // ─────────────────────────────────────────────────────────────────
-      // TODO: Reemplazá esto con tu servicio real de email.
-      //
-      // Opción A — Formspree (gratis, sin backend):
-      //   1. Creá cuenta en formspree.io
-      //   2. Creá un nuevo form → te da un ID (ej: "xpzgkwqr")
-      //   3. Reemplazá el fetch de abajo:
-      //
-      // const res = await fetch('https://formspree.io/f/TU_FORM_ID', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(form),
-      // });
-      // if (!res.ok) throw new Error('Error al enviar');
-      //
-      // Opción B — Resend (más pro, requiere dominio propio)
-      // ─────────────────────────────────────────────────────────────────
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json', // le pedimos JSON de vuelta → errores descriptivos
+        },
+        body: JSON.stringify({
+          nombre:  form.nombre,
+          email:   form.email,
+          mensaje: form.mensaje,
+          _gotcha: honeypot,   // Formspree usa este campo para detectar bots
+        }),
+      });
 
-      // Simulación temporal (eliminala cuando integres el servicio real)
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      if (!res.ok) {
+        // Formspree devuelve errores detallados: cuota excedida, email inválido, etc.
+        const data = await res.json();
+        throw new Error(data?.errors?.[0]?.message ?? 'Error en el servidor');
+      }
 
       setStatus('success');
-      setForm({ nombre: '', email: '', mensaje: '' });
-    } catch {
+      setForm({ nombre: '', email: '', mensaje: '' }); // limpiamos el form al éxito
+
+    } catch (err) {
+      console.error('[ContactForm] Error al enviar:', err);
       setStatus('error');
     }
   };
 
+  // ── JSX ─────────────────────────────────────────────────────────────
   return (
     <form onSubmit={handleSubmit} noValidate className="w-full space-y-5">
 
-      {/* ── Campo: Nombre ─────────────────────────────────── */}
+      {/*
+        HONEYPOT: display:none lo hace invisible para humanos.
+        Los bots rastrean el DOM y llenan todos los inputs → Formspree los filtra.
+        tabIndex={-1} y autoComplete="off" previenen interacción accidental.
+      */}
+      <input
+        type="text"
+        name="_gotcha"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        style={{ display: 'none' }}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
+
+      {/* ── Nombre ───────────────────────────────────────── */}
       <div className="space-y-1.5">
         <label htmlFor="nombre" className="block text-sm font-medium text-mid">
           Nombre
@@ -123,7 +148,7 @@ export default function ContactForm() {
         )}
       </div>
 
-      {/* ── Campo: Email ──────────────────────────────────── */}
+      {/* ── Email ─────────────────────────────────────────── */}
       <div className="space-y-1.5">
         <label htmlFor="email" className="block text-sm font-medium text-mid">
           Email
@@ -149,7 +174,7 @@ export default function ContactForm() {
         )}
       </div>
 
-      {/* ── Campo: Mensaje ────────────────────────────────── */}
+      {/* ── Mensaje ───────────────────────────────────────── */}
       <div className="space-y-1.5">
         <label htmlFor="mensaje" className="block text-sm font-medium text-mid">
           Mensaje
@@ -174,7 +199,7 @@ export default function ContactForm() {
         )}
       </div>
 
-      {/* ── Botón de envío ────────────────────────────────── */}
+      {/* ── Botón ─────────────────────────────────────────── */}
       <button
         type="submit"
         disabled={status === 'loading' || status === 'success'}
@@ -192,7 +217,7 @@ export default function ContactForm() {
             : 'Enviar mensaje'}
       </button>
 
-      {/* ── Feedback de estado ────────────────────────────── */}
+      {/* ── Feedback ──────────────────────────────────────── */}
       {status === 'success' && (
         <p className="text-center text-accent/80 text-sm">
           ¡Gracias! Me pondré en contacto a la brevedad.
