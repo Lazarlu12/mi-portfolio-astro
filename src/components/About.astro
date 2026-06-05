@@ -7,40 +7,47 @@ interface Props {
   mode?: 'home' | 'page';
 }
 const { mode = 'home' } = Astro.props;
+
+const languages = data.skills.filter(s => s.category === 'language');
+const tools     = data.skills.filter(s => s.category === 'tool');
 ---
 
-<!--
-  Sin padding lateral en el contenedor externo → el carrusel puede ir a full-width.
-  El texto sí tiene su propio padding mediante el div max-w-3xl interno.
--->
 <div
   class:list={[
     'flex flex-col items-center bg-[#212121]',
     mode === 'home'
-      ? 'h-full justify-center'
-      : 'min-h-full justify-center py-20 md:py-24',
+      ? 'h-full justify-center py-6' 
+      : 'min-h-full justify-center py-12 md:py-16',
   ]}
 >
-  <!-- Texto centrado y contenido dentro de max-w-3xl con padding lateral -->
-  <div class="max-w-3xl w-full text-center px-8 md:px-16">
-    <span class="text-accent text-xs uppercase tracking-[0.3em] mb-4 block">
-      Quién soy
-    </span>
-
-    <h2 class="text-3xl md:text-4xl font-bold text-high mb-8 leading-tight">
+  <!-- Texto: Ancho máximo reducido a 2xl y tipografía más pequeña -->
+  <div class="max-w-2xl w-full text-center px-6 md:px-12">
+    <h2 class="text-2xl md:text-3xl font-bold text-high mb-3 leading-tight">
       Sobre mí
     </h2>
-
-    <p class="text-mid text-lg md:text-xl leading-relaxed">
+    <p class="text-mid text-sm md:text-base leading-relaxed">
       {data.personalInfo.about}
     </p>
   </div>
 
-  <!--
-    El carrusel vive FUERA del max-w-3xl → corre de borde a borde de la sección.
-    El mt-10 ya está dentro de SkillsCarousel.
-  -->
-  <div class="w-full">
-    <SkillsCarousel skills={data.skills} />
+  <!-- Contenedor de carruseles: Menor margen superior y menor separación interna -->
+  <div class="w-full mt-6 flex flex-col gap-4">
+
+    <!-- Carrusel 1: Lenguajes & Frameworks -->
+    <div>
+      <p class="text-center text-[10px] text-low uppercase tracking-[0.2em] mb-2 px-4">
+        Lenguajes &amp; Frameworks
+      </p>
+      <SkillsCarousel skills={languages} speed={35} direction="left" />
+    </div>
+
+    <!-- Carrusel 2: Herramientas & Plataformas -->
+    <div>
+      <p class="text-center text-[10px] text-low uppercase tracking-[0.2em] mb-2 px-4">
+        Herramientas &amp; Plataformas
+      </p>
+      <SkillsCarousel skills={tools} speed={28} direction="right" />
+    </div>
+
   </div>
 </div>

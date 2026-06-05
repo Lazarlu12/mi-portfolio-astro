@@ -20,6 +20,7 @@ export interface Experience {
 export interface Skill {
   name: string;
   description: string;
+  category: 'language' | 'tool';  
 }
 
 export interface PortfolioData {

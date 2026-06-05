@@ -2,6 +2,7 @@ import type { PortfolioData } from '../types';
 import { images } from '../assets/images';
 import type { Skill } from '../types/index';
 
+
 export const data: PortfolioData = {
   personalInfo: {
     name: "Luca Lazarte",
@@ -15,17 +16,31 @@ export const data: PortfolioData = {
     cvLink: "/CVLuca_Lazarte.pdf"
   },
   // Reemplazá el array de skills:
+// En el import del archivo, confirmá que esté:
+
+// El array skills:
 skills: [
-  { name: 'HTML',              description: 'Estructura y semántica web' },
-  { name: 'CSS',               description: 'Estilos, layouts y animaciones' },
-  { name: 'JavaScript',        description: 'Lenguaje de scripting web' },
-  { name: 'TypeScript',        description: 'JavaScript con tipado estático' },
-  { name: 'React.js',          description: 'Librería para interfaces UI' },
-  { name: 'Tailwind CSS',      description: 'Framework CSS utility-first' },
-  { name: 'Git',               description: 'Control de versiones distribuido' },
-  { name: 'Responsive Design', description: 'UI adaptable a cualquier pantalla' },
-  { name: 'C#',                description: 'Lenguaje de desarrollo .NET' },
-  { name: 'PWA',               description: 'Apps web progresivas e instalables' },
+  // ── LENGUAJES & FRAMEWORKS ──────────────────────────────
+  { name: 'HTML',              description: 'Estructura y semántica web',        category: 'language' },
+  { name: 'CSS',               description: 'Estilos, layouts y animaciones',    category: 'language' },
+  { name: 'JavaScript',        description: 'Lenguaje de scripting web',         category: 'language' },
+  { name: 'TypeScript',        description: 'JavaScript con tipado estático',    category: 'language' },
+  { name: 'React.js',          description: 'Librería para interfaces UI',       category: 'language' },
+  { name: 'Next.js',           description: 'Framework React full-stack',        category: 'language' },
+  { name: 'Tailwind CSS',      description: 'Framework CSS utility-first',       category: 'language' },
+  { name: 'Astro',             description: 'Framework para sitios estáticos',   category: 'language' },
+  { name: 'C#',                description: 'Lenguaje de desarrollo .NET',       category: 'language' },
+
+  // ── HERRAMIENTAS & PLATAFORMAS ───────────────────────────
+  { name: 'Git',               description: 'Control de versiones distribuido',  category: 'tool' },
+  { name: 'GitHub',            description: 'Plataforma de código y colaboración', category: 'tool' },
+  { name: 'Vercel',            description: 'Deploy y hosting en el edge',       category: 'tool' },
+  { name: 'Supabase',          description: 'Backend as a Service open-source',  category: 'tool' },
+  { name: 'PostgreSQL',        description: 'Base de datos relacional robusta',  category: 'tool' },
+  { name: 'Prisma',            description: 'ORM moderno para TypeScript',       category: 'tool' },
+  { name: 'Clerk',             description: 'Autenticación y gestión de usuarios', category: 'tool' },
+  { name: 'PWA',               description: 'Apps web progresivas e instalables', category: 'tool' },
+  { name: 'Responsive Design', description: 'UI adaptable a cualquier pantalla', category: 'tool' },
 ] satisfies Skill[],
   projects: [
     {
