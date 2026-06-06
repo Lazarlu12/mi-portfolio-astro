@@ -3,58 +3,76 @@ import { data } from '../data/portfolioData';
 ---
 
 <!--
-  h-full para ocupar el 100% del contenedor sticky h-screen del index.astro
-  Sin h-full, el efecto stacking no funciona correctamente
+  overflow-y-auto como safety net: si en algún dispositivo muy chico
+  el contenido no entra en h-screen, puede scrollearse dentro de la sección.
 -->
-<div class="h-full flex flex-col md:flex-row items-center justify-center gap-8 px-8 md:px-16 bg-surface">
+<div class="h-full flex flex-col md:flex-row items-center justify-center
+            gap-6 md:gap-8
+            px-8 md:px-16
+            bg-surface overflow-y-auto">
 
-  <!-- Columna izquierda: texto -->
+  <!-- Columna de texto -->
   <div class="flex-1 min-w-70 flex flex-col items-center md:items-start text-center md:text-left">
 
-    <h1 class="text-5xl md:text-6xl mb-4 font-light text-high leading-tight">
+    <!--
+      Escalado progresivo del heading:
+      text-4xl (36px) mobile → text-5xl (48px) sm → text-6xl (60px) md+
+      Evita que "Hola, soy Luca Lazarte" desborde en pantallas estrechas.
+    -->
+    <h1 class="text-4xl sm:text-5xl md:text-6xl mb-4 font-light text-high leading-tight">
       Hola, soy <span class="font-bold">{data.personalInfo.name}</span>
     </h1>
 
-    <h2 class="text-xl md:text-2xl text-accent mb-6 font-light tracking-wide">
+    <!-- text-lg en mobile (18px) → text-2xl en md (24px) -->
+    <h2 class="text-lg sm:text-xl md:text-2xl text-accent mb-5 md:mb-6 font-light tracking-wide">
       {data.personalInfo.role}
     </h2>
 
-    <p class="max-w-130 text-base md:text-lg mb-10 text-mid leading-relaxed">
+    <!--
+      mb-6 en mobile en vez de mb-10 → ahorra 16px de margen inferior.
+      Ese espacio importa cuando todo tiene que entrar en h-screen.
+    -->
+    <p class="max-w-130 text-base md:text-lg mb-6 md:mb-10 text-mid leading-relaxed">
       {data.personalInfo.bio}
     </p>
 
     <div class="flex flex-wrap gap-3 justify-center md:justify-start">
       <a
         href="#projects"
-        class="px-6 py-3 border border-high/30 text-high text-xs uppercase tracking-widest hover:border-accent hover:text-accent transition-all duration-200"
+        class="px-6 py-3 border border-high/30 text-high text-xs uppercase tracking-widest
+               hover:border-accent hover:text-accent transition-all duration-200"
       >
         Ver Proyectos
       </a>
       <a
         href="#contact"
-        class="px-6 py-3 border border-high/30 text-high text-xs uppercase tracking-widest hover:border-accent hover:text-accent transition-all duration-200"
+        class="px-6 py-3 border border-high/30 text-high text-xs uppercase tracking-widest
+               hover:border-accent hover:text-accent transition-all duration-200"
       >
         Ver Contacto
       </a>
       <a
         href={data.personalInfo.cvLink}
         download
-        class="px-6 py-3 border border-high/10 text-mid text-xs uppercase tracking-widest hover:border-accent hover:text-accent transition-all duration-200"
+        class="px-6 py-3 border border-high/10 text-mid text-xs uppercase tracking-widest
+               hover:border-accent hover:text-accent transition-all duration-200"
       >
         Descargar CV
       </a>
     </div>
-
   </div>
 
-  <!-- Columna derecha: imagen -->
+  <!-- Columna de imagen -->
   <div class="flex-none flex justify-center">
+    <!--
+      w-44 mobile (176px) → w-52 sm (208px) → w-72 md (288px).
+      La imagen más chica en mobile libera ~32px de altura que necesita el texto.
+    -->
     <img
       src={data.personalInfo.profileImage}
       alt={`Foto de perfil de ${data.personalInfo.name}`}
-      class="w-52 md:w-72 rounded-full object-cover aspect-square border border-white/10"
+      class="w-44 sm:w-52 md:w-72 rounded-full object-cover aspect-square border border-white/10"
       loading="eager"
     />
   </div>
-
 </div>
