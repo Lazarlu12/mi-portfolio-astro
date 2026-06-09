@@ -12,30 +12,34 @@ import Contact from '../components/Contact.astro';
   description="Portfolio de Luca Lazarte, desarrollador frontend."
   variant="home"
 >
-  <div class="relative">
+  <!--
+    SCROLL NORMAL: cada sección ocupa h-screen, se apilan y el usuario
+    hace scroll para recorrerlas. Sin sticky = sin stacking.
 
-    <!-- z-10: base, primera capa visible -->
-    <section class="sticky top-0 h-screen w-full overflow-hidden z-10" aria-label="Presentación">
+    Para reactivar el efecto stacking, agregar a cada section:
+    "sticky top-0"  y  z-[10 / 20 / 30 / 40 / 50]
+  -->
+  <div>
+
+    <section class="h-screen w-full overflow-hidden" aria-label="Presentación">
       <Hero />
     </section>
 
-    <!-- z-20: se desliza encima del Hero -->
-    <section class="sticky top-0 h-screen w-full overflow-hidden z-20" aria-label="Sobre mí">
+    <section class="h-screen w-full overflow-hidden" aria-label="Sobre mí">
       <About />
     </section>
 
-    <!-- z-30: se desliza encima de About -->
-    <section class="sticky top-0 h-screen w-full overflow-hidden z-30" aria-label="Proyectos">
+    <section class="h-screen w-full overflow-hidden" aria-label="Proyectos">
       <Projects />
     </section>
 
-    <!-- z-40: se desliza encima de Projects -->
-    <section class="sticky top-0 h-screen w-full overflow-hidden z-40" aria-label="Experiencia">
+    <section class="h-screen w-full overflow-hidden" aria-label="Experiencia">
       <Experience />
     </section>
-    
-    <section class="sticky top-0 h-screen w-full overflow-hidden z-50" aria-label="Contacto">
+
+    <section class="h-screen w-full overflow-hidden" aria-label="Contacto">
       <Contact />
     </section>
+
   </div>
 </Layout>
