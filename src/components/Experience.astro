@@ -1,0 +1,71 @@
+---
+import { data } from '../data/portfolioData';
+
+// mode prop: mismo patrón que About.astro.
+// 'home'  → h-full + pt-20 md:pt-24 (compensa navbar en stacking)
+// 'page'  → min-h-full + py-20 (el Layout variant="page" ya agrega el pt-20 del navbar)
+interface Props {
+  mode?: 'home' | 'page';
+}
+const { mode = 'home' } = Astro.props;
+---
+
+<div
+  class:list={[
+    'flex flex-col justify-center px-8 md:px-16 pb-8 bg-[#1a1a1a] overflow-y-auto shadow-[0_-8px_30px_rgba(0,0,0,0.4)]',
+    mode === 'home'
+      ? 'h-full pt-20 md:pt-24'   // mobile: menos padding top que el desktop (pt-24 → pt-20)
+      : 'min-h-full py-20 md:py-24', // page: flujo natural, padding vertical generoso
+  ]}
+>
+  <div class="max-w-3xl w-full mx-auto">
+
+    <div class="mb-8 md:mb-10">
+      <span class="text-accent text-xs uppercase tracking-[0.3em] block mb-2">
+        Trayectoria
+      </span>
+      <h2 class="text-3xl md:text-4xl font-bold text-high">
+        Experiencia
+      </h2>
+    </div>
+
+    <div class="space-y-0">
+      {data.experience.map((item) => (
+        <div class="relative pl-8 pb-8 md:pb-10 border-l border-white/10 last:border-l-transparent last:pb-0">
+
+          <!--
+            FIX: -left-1.25 puede no compilar en Tailwind v4 (valor no estándar).
+            -left-[5px] es un valor arbitrario → siempre funciona y es matemáticamente
+            correcto: el dot es w-2.5 (10px), centrado sobre la línea de 1px = -4.5px ≈ -5px.
+          -->
+          <div class="absolute -left-1.25 top-1.5 w-2.5 h-2.5 rounded-full border-2 border-accent bg-[#1a1a1a]" />
+
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-1 mb-2">
+            <div>
+              <!--
+                text-sm en mobile (14px) → text-base en md (16px).
+                En el timeline de mobile, los roles necesitan un tamaño cómodo
+                sin dominar demasiado en una pantalla estrecha.
+              -->
+              <h3 class="text-high font-semibold text-sm md:text-base">
+                {item.role}
+              </h3>
+              <p class="text-accent text-xs md:text-sm mt-0.5">
+                {item.company}
+              </p>
+            </div>
+            <span class="text-low text-xs uppercase tracking-widest shrink-0 md:mt-1">
+              {item.period}
+            </span>
+          </div>
+
+          <p class="text-mid text-xs md:text-sm leading-relaxed">
+            {item.description}
+          </p>
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+</div>

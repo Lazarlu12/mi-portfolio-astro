@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<!--
+  Caso especial: Contact.astro ya tiene <Footer /> adentro.
+  h-screen en main → Contact (h-full) puede llenar toda la pantalla.
+  No importamos Footer aquí porque Contact ya lo incluye.
+-->
+<Layout
+  title="Contacto — Luca Lazarte"
+  description="Contactá a Luca Lazarte para proyectos, colaboraciones u oportunidades."
+  variant="page"
+>
+  <main class="h-screen flex flex-col">
+    <Contact />
+  </main>
+</Layout>

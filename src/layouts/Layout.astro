@@ -7,16 +7,23 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
-  // 'home' = página principal con scroll manual y stacking
-  // 'page' = páginas secundarias con View Transitions animadas
   variant?: 'home' | 'page';
+  // ✅ SEO: permite pasar una URL canónica custom por página
+  canonical?: string;
 }
 
 const {
   title = 'Luca Lazarte — Frontend Developer',
-  description = 'Portfolio personal de Luca Lazarte, desarrollador frontend.',
+  description = 'Portfolio personal de Luca Lazarte, desarrollador frontend estudiante de UTN Tucumán.',
   variant = 'page',
+  canonical,
 } = Astro.props;
+
+// ✅ SEO: construye la URL canónica automáticamente.
+// Astro.site necesita estar definido en astro.config.mjs → site: 'https://tu-dominio.com'
+// Mientras no tengas dominio, usa una URL placeholder que actualizarás en el deploy.
+const siteURL = 'https://lucalazarte.netlify.app'; // ← actualizá cuando tengas dominio propio
+const canonicalURL = canonical ?? `${siteURL}${Astro.url.pathname}`;
 ---
 
 <!doctype html>
@@ -24,21 +31,64 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ✅ SEO BÁSICO -->
     <meta name="description" content={description} />
+    <meta name="author" content="Luca Lazarte" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- ✅ OPEN GRAPH (aparece cuando compartís el link en redes, WhatsApp, etc.) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Luca Lazarte — Portfolio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content="es_AR" />
+    <!-- og:image → cuando tengas una imagen para compartir, descomentá esto:
+    <meta property="og:image" content={`${siteURL}/og-image.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    -->
+
+    <!-- ✅ TWITTER / X CARD -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- ✅ FAVICON (SVG como principal, ICO como fallback para browsers viejos) -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <!-- ✅ FUENTES: preconnect primero (reduce latencia), luego el stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ClientRouter />
   </head>
 
   <!--
-    data-variant permite aplicar estilos distintos desde CSS
-    según si estamos en el home o en una página secundaria.
-    En el home el scroll está habilitado; en páginas secundarias no.
+    data-variant sigue en el body por si necesitás estilos CSS
+    que afecten globalmente según el contexto (home vs página).
   -->
   <body data-variant={variant}>
-    <Navbar />
-    <slot />
+    <Navbar transition:persist />
+
+    <!--
+      ✅ FIX NAVBAR: la Navbar es position:fixed, así que sale del flujo normal.
+      En 'home' NO agregamos padding → el stacking sticky maneja su propio offset interno.
+      En 'page' agregamos pt-20 → compensa la altura del navbar (~80px)
+      para que el contenido no quede tapado al cargar la página.
+    -->
+    {variant === 'page'
+      ? <div class="pt-20"><slot /></div>
+      : <slot />
+    }
   </body>
 </html>
