@@ -6,6 +6,7 @@ import react from '@astrojs/react';
 import netlify from '@astrojs/netlify';
 
 export default defineConfig({
+  site: 'https://portfolio-devlucalazarte.netlify.app/',
   output: 'static',
   adapter: netlify(), // 3. SEGURIDAD Y CONFIGURACIÓN: Añadimos el adaptador al flujo de Astro
   integrations: [
