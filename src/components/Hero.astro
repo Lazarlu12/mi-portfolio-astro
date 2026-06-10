@@ -63,16 +63,18 @@ import { data } from '../data/portfolioData';
   </div>
 
   <!-- Columna de imagen -->
-  <div class="flex-none flex justify-center">
+  <div class="flex-none flex justify-center mb-6 md:mb-0">
     <!--
       w-44 mobile (176px) → w-52 sm (208px) → w-72 md (288px).
       La imagen más chica en mobile libera ~32px de altura que necesita el texto.
     -->
-    <img
-      src={data.personalInfo.profileImage}
-      alt={`Foto de perfil de ${data.personalInfo.name}`}
-      class="w-44 sm:w-52 md:w-72 rounded-full object-cover aspect-square border border-white/10"
-      loading="eager"
-    />
+    <div class="rounded-full border border-accent/25 p-2 md:p-3 bg-surface/80 shadow-sm">
+      <img
+        src={data.personalInfo.profileImage}
+        alt={`Foto de perfil de ${data.personalInfo.name}`}
+        class="w-44 sm:w-52 md:w-72 rounded-full object-cover aspect-square border border-white/10"
+        loading="eager"
+      />
+    </div>
   </div>
 </div>

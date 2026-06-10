@@ -16,9 +16,8 @@ interface FormErrors {
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
 // ─── CONFIGURACIÓN ────────────────────────────────────────────────────
-// ✅ Reemplazá TU_FORM_ID con el ID que te dio Formspree (ej: "xpzgkwqr")
-// El ID NO es secreto: es público por diseño. No necesitás .env para esto.
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mlgkgnpg';
+// Ahora apuntamos a nuestra API local de Astro en lugar de Formspree
+const API_ENDPOINT = '/api/contact';
 
 // ─── COMPONENTE ───────────────────────────────────────────────────────
 export default function ContactForm() {
@@ -27,7 +26,6 @@ export default function ContactForm() {
   const [status, setStatus]   = useState<FormStatus>('idle');
 
   // Honeypot anti-spam: campo oculto para humanos.
-  // Los bots lo llenan automáticamente → Formspree descarta el envío.
   const [honeypot, setHoneypot] = useState('');
 
   // ── Validación ──────────────────────────────────────────────────────
@@ -73,23 +71,24 @@ export default function ContactForm() {
     setStatus('loading');
 
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch(API_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json', // le pedimos JSON de vuelta → errores descriptivos
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           nombre:  form.nombre,
           email:   form.email,
           mensaje: form.mensaje,
-          _gotcha: honeypot,   // Formspree usa este campo para detectar bots
+          _gotcha: honeypot,   // Lo mandamos al backend, y el backend se lo pasa a Formspree
         }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        // Formspree devuelve errores detallados: cuota excedida, email inválido, etc.
-        const data = await res.json();
+        // La API de Astro fue diseñada para devolver el error en el mismo formato
         throw new Error(data?.errors?.[0]?.message ?? 'Error en el servidor');
       }
 
@@ -106,11 +105,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="w-full space-y-5">
 
-      {/*
-        HONEYPOT: display:none lo hace invisible para humanos.
-        Los bots rastrean el DOM y llenan todos los inputs → Formspree los filtra.
-        tabIndex={-1} y autoComplete="off" previenen interacción accidental.
-      */}
+      {/* HONEYPOT */}
       <input
         type="text"
         name="_gotcha"
@@ -225,12 +220,11 @@ export default function ContactForm() {
       )}
       {status === 'error' && (
         <p className="text-center text-red-400/70 text-sm">
-          <a>
           Algo salió mal. Escribime directo a{' '}
-          
+          <a
             href="mailto:lazarteluca036@gmail.com"
             className="underline underline-offset-2 hover:text-red-300 transition-colors"
-          {'>'}
+          >
             lazarteluca036@gmail.com
           </a>
         </p>

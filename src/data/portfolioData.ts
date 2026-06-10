@@ -9,7 +9,7 @@ export const data: PortfolioData = {
     role: "Frontend Developer",
     profileImage: images.profileImage.src,
     bio: "Diseñando, desarrollando proyectos y aplicaciones web, escalables y centradas en el usuario.",
-    about: "Soy un estudiante de programación apasionado por el desarrollo web. Me enfoco principalmente en el ecosistema de React + TypeScript para el frontend. Resolviendo problemas y creando soluciones eficientes. Además, tengo conocimientos en Node.js y C# para el backend, y estoy en constante aprendizaje para mejorar mis habilidades en el mundo del desarrollo web.",
+    about: "Desarrollador web enfocado en la creación de soluciones eficientes, con experiencia práctica en el desarrollo de proyectos robustos y escalables.En el frontend, me especializo en el ecosistema de React y TypeScript. Para el backend, diseño arquitecturas utilizando Node.js y Next.js, aprovechando tecnologías modernas como Server Actions para conectar ambas capas de forma fluida.",
     email: "lazarteluca036@gmail.com",
     github: "https://github.com/Lazarlu12",
     linkedin: "https://www.linkedin.com/in/lucalazarte/",
@@ -45,6 +45,16 @@ skills: [
   projects: [
     {
       id: "1",
+      name: "AutoLog Pro",
+      description: "App de control de mantenimiento de vehículos. Lleva control del mantenimiento de tus vehículos. Cronología del vehículo con recordatorios de cambios de aceite, filtros, seguros y vencimientos, etc. También permite la carga de fotos y documentos.",
+      image: images.autoLogProImage.src, 
+      liveUrl: "https://autologpro.online/",
+      repoUrl: "https://github.com/Lazarlu12/AutoLog-Pro",
+      stack: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Clerk", "CSS"],
+      featured: true
+    },
+    {
+      id: "2",
       name: "Budget Tracker",
       description: "Aplicación para el registro de gastos y control de presupuesto. Incluye gestión de transacciones mediante modales e integración de Recharts para visualización de datos.",
       image: images.budgetTrackerImage.src, 
@@ -54,7 +64,7 @@ skills: [
       featured: true
     },
     {
-      id: "2",
+      id: "3",
       name: "To Do App",
       description: "Aplicación de lista de tareas pendientes con funcionalidades de crear, eliminar tareas y marcar como completadas.",
       image: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80&w=800",
@@ -64,7 +74,7 @@ skills: [
       featured: true
     },
     {
-      id: "3",
+      id: "4",
       name: "Carrito de compras",
       description: "Carrito de compras responsivo que permite al usuario agregar productos, gestionar cantidades, filtrado, buscar productos y calcular totales.",
       image: images.carritoImage.src,
@@ -74,7 +84,7 @@ skills: [
       featured: true
     },
     {
-      id: "4",
+      id: "5",
       name: "Aplicación del clima",
       description: "Aplicación web para consultar el estado del tiempo en diferentes ciudades del mundo, utilizando una API de servicios meteorológicos.",
       image: images.climaImage.src,
@@ -90,13 +100,13 @@ skills: [
       role: "Estudiante de Programación",
       company: "Universidad Tecnológica Nacional - Facultad Regional Tucumán",
       period: "Presente",
-      description: "Cursando estudios formales, resolviendo parciales técnicos en C# y desarrollando proyectos prácticos."
+      description: "Cursando estudios formales, resolviendo parciales técnicos en C# y desarrollando proyectos."
     },
     {
       id: "2",
       role: "Desarrollador Frontend Freelance",
       company: "Proyectos Personales",
-      period: "2023 - Presente",
+      period: "2022 - Presente",
       description: "Diseño y desarrollo de aplicaciones web a medida, implementando buenas prácticas de UI/UX y arquitecturas limpias."
     },
     {
@@ -105,6 +115,13 @@ skills: [
       company: "Proyectos Web para un cliente",
       period: "2025 - 2025",
       description: "Desarrollo de sitio web a medida para un cliente, diseño, maquetación y desarrollo del sitio web."
+    },
+    {
+      id: "4",
+      role: "Desarrollador FullStack Freelance",
+      company: "Aplicación Personal de Control de Mantenimiento de Vehículos",
+      period: "2026 - 2026",
+      description: "Desarrollo de una aplicación web para el control de mantenimiento de vehículos, incluyendo gestión de tareas, recordatorios y visualización de datos."
     }
   ]
 };
