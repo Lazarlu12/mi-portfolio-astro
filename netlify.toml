@@ -1,7 +1,6 @@
-# netlify.toml — va en la raíz de mi-portfolio-astro/
 [build]
-  command   = "pnpm build"
-  publish   = "dist"
+  command = "pnpm build"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
